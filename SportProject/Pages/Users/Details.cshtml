@@ -2,10 +2,10 @@
 @model SportProject.Pages.Users.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "User Details";
 }
 
-<h1>Details</h1>
+<h1>User Details</h1>
 
 <div>
     <h4>User</h4>
@@ -30,6 +30,22 @@
             @Html.DisplayFor(model => model.User.EnrollmentDate)
         </dd>
     </dl>
+    <h4>Fixtures</h4>
+    <table class="table">
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Result</th>
+        </tr>
+        @foreach (var item in Model.User.Fixtures)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.FixtureDate.ToShortDateString()</td>
+                <td>@item.Result</td>
+            </tr>
+        }
+    </table>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.User?.ID">Edit</a> |

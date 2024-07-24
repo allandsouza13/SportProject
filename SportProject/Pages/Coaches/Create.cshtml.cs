@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using SportProject.Models;
 using SportProject.Data;
+using SportProject.Models;
 
-namespace SportProject.Pages.Users
+namespace SportProject.Pages.Coaches
 {
     public class CreateModel : PageModel
     {
@@ -25,23 +25,21 @@ namespace SportProject.Pages.Users
         }
 
         [BindProperty]
-        public User User { get; set; } // Add this property
+        public Coach Coach { get; set; }
+        
 
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            var emptyUser = new User();
-
-            if (await TryUpdateModelAsync<User>(
-                emptyUser,
-                "User",   // Prefix for form value.
-                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+          if (!ModelState.IsValid)
             {
-                _context.Users.Add(emptyUser);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return Page();
             }
 
-            return Page();
+            _context.Coaches.Add(Coach);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
         }
     }
 }

@@ -1,0 +1,34 @@
+﻿@page
+@model SportProject.Pages.AboutModel
+
+@{
+    ViewData["Title"] = "User Body Statistics";
+}
+
+<h2>User Body Statistics</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Enrollment Date
+            </th>
+            <th>
+                Users
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>
+                    @item.EnrollmentDate?.ToString("yyyy-MM-dd")
+                </td>
+                <td>
+                    @item.UserCount
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

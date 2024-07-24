@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using SportProject.Models;
 
 namespace SportProject.Data
 {
     public class SportContext : DbContext
     {
-        public SportContext (DbContextOptions<SportContext> options)
+        public SportContext(DbContextOptions<SportContext> options)
             : base(options)
         {
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<Fixture> Fixtures { get; set; }
+        public DbSet<Coach> Coaches { get; set; }
         public DbSet<Sport> Sports { get; set; }
+        public DbSet<Fixture> Fixtures { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Sport>().ToTable("Sports");
-            modelBuilder.Entity<Fixture>().ToTable("Fixtures");
-            modelBuilder.Entity<User>().ToTable("Users");
-        }
+            base.OnModelCreating(modelBuilder);
 
-        public DbSet<ContosoUniversity.Models.User> User { get; set; } = default!;
+            // Configure many-to-many relationship between Coach and Sport
+            modelBuilder.Entity<Coach>()
+                .HasMany(c => c.Sports)
+                .WithMany(s => s.Coaches)
+                .UsingEntity(j => j.ToTable("CoachSports")); // Define the junction table
+        }
     }
 }

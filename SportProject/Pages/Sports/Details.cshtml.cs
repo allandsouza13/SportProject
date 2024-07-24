@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using SportProject.Models;
 using SportProject.Data;
+using SportProject.Models;
 
-namespace SportProject.Pages.Users
+namespace SportProject.Pages.Sports
 {
     public class DetailsModel : PageModel
     {
@@ -19,27 +19,23 @@ namespace SportProject.Pages.Users
             _context = context;
         }
 
-      public User User { get; set; }
+      public Sport Sport { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _context.Sports == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .Include(s => s.Fixtures)
-                .ThenInclude(e => e.Sport)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (user == null)
+            var sport = await _context.Sports.FirstOrDefaultAsync(m => m.SportID == id);
+            if (sport == null)
             {
                 return NotFound();
             }
             else 
             {
-                User = user;
+                Sport = sport;
             }
             return Page();
         }
